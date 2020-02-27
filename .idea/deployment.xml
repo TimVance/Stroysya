@@ -20,7 +20,6 @@
             <excludedPath path="/home/bitrix/www/form" />
             <excludedPath path="/home/bitrix/www/help" />
             <excludedPath path="/home/bitrix/www/images" />
-            <excludedPath path="/home/bitrix/www/include" />
             <excludedPath path="/home/bitrix/www/info" />
             <excludedPath path="/home/bitrix/www/landings" />
             <excludedPath path="/home/bitrix/www/news" />
@@ -40,7 +39,6 @@
             <excludedPath path="/home/bitrix/www/bitrix/blocks" />
             <excludedPath path="/home/bitrix/www/bitrix/cache" />
             <excludedPath path="/home/bitrix/www/bitrix/catalog_export" />
-            <excludedPath path="/home/bitrix/www/bitrix/components" />
             <excludedPath path="/home/bitrix/www/bitrix/css" />
             <excludedPath path="/home/bitrix/www/bitrix/fonts" />
             <excludedPath path="/home/bitrix/www/bitrix/gadgets" />
@@ -73,7 +71,6 @@
             <excludedPath local="true" path="$PROJECT_DIR$/form" />
             <excludedPath local="true" path="$PROJECT_DIR$/help" />
             <excludedPath local="true" path="$PROJECT_DIR$/images" />
-            <excludedPath local="true" path="$PROJECT_DIR$/include" />
             <excludedPath local="true" path="$PROJECT_DIR$/info" />
             <excludedPath local="true" path="$PROJECT_DIR$/landings" />
             <excludedPath local="true" path="$PROJECT_DIR$/news" />
@@ -93,7 +90,6 @@
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/blocks" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/cache" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/catalog_export" />
-            <excludedPath local="true" path="$PROJECT_DIR$/bitrix/components" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/css" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/fonts" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/gadgets" />
@@ -114,6 +110,18 @@
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/templates/aspro_mail" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/templates/corp_services_orange" />
             <excludedPath local="true" path="$PROJECT_DIR$/bitrix/templates/landing24" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/api.yamarket.reviews_model.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/catalog.section.list.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/catalog.smart.filter" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/catalog.viewed.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/com.banners.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/instargam.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/oneclickbuy.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/regionality.list.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/social.info.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/tabs.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/aspro/theme.next" />
+            <excludedPath path="/home/bitrix/www/bitrix/components/bitrix" />
           </excludedPaths>
         </serverdata>
       </paths>

@@ -1,0 +1,10 @@
+.services-list {
+    display: table;
+    width: 100%;
+}
+.services-row {
+    display: table-row;
+}
+.services-row > div {
+    display: table-cell;
+}
