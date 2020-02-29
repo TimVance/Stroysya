@@ -11,6 +11,7 @@ class ViewMasterList extends CBitrixComponent
 
     protected $errors = array();
     protected $block_id = 27;
+    protected $group_id = 8;
 
     public function onIncludeComponentLang()
     {
@@ -40,49 +41,75 @@ class ViewMasterList extends CBitrixComponent
             throw new SystemException(current($this->errors));
 
         if ($this->StartResultCache()) {
-            $arResult          = array();
-            $arResult["items"] = $this->getList();
-            $arResult["users"] = $this->getUsers($arResult["items"]);
-            $this->arResult    = $arResult;
+            $arResult             = array();
+            $arResult["sections"] = $this->getAllSections();
+            $arResult["masters"]  = $this->getAllUsers();
+            $arResult["services"] = $this->getListServicesByUsers($arResult["masters"]);
+            $this->arResult       = $arResult;
         }
     }
 
-    protected function getList()
+    // Получение всех пользователей группы мастера
+    protected function getAllUsers()
+    {
+        $data    = array();
+        $filter  = Array("GROUPS_ID" => array($this->group_id));
+        $rsUsers = CUser::GetList(($by = "ID"), ($order = "desc"), $filter);
+        while ($rsUser = $rsUsers->Fetch()) {
+            $data[$rsUser["ID"]]["name"] = $rsUser["NAME"] . ' ' . $rsUser["SECOND_NAME"] . ' ' . $rsUser["LAST_NAME"];
+            if (!empty($rsUser["PERSONAL_PHOTO"]))
+                $data[$rsUser["ID"]]["image"] = CFile::ResizeImageGet(
+                    $rsUser["PERSONAL_PHOTO"],
+                    array("width" => 64, "height" => 64),
+                    BX_RESIZE_IMAGE_EXACT
+                );
+        }
+        return $data;
+    }
+
+    // Получение услуг мастеров
+    protected function getListServicesByUsers($masters)
+    {
+        $ids = array();
+        foreach ($masters as $id => $master) {
+            $ids[] = $id;
+        }
+        if (count($ids) > 0) {
+            $items    = array();
+            $arSelect = Array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
+            $arFilter = Array(
+                "IBLOCK_ID"         => IntVal($this->block_id),
+                "ACTIVE_DATE"       => "Y",
+                "ACTIVE"            => "Y",
+                "=PROPERTY_masters" => $ids
+            );
+            $res      = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
+            while ($ob = $res->GetNextElement()) {
+                $arFields = $ob->GetFields();
+                $arProps  = $ob->GetProperties();
+                foreach ($arProps["masters"]["VALUE"] as $user) {
+                    $items[$user][$arFields["ID"]]["name"] = $arFields["NAME"];
+                }
+            }
+            return $items;
+        }
+    }
+
+    protected function getAllSections()
     {
         $items    = array();
         $arSelect = Array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
-        $arFilter = Array("IBLOCK_ID" => IntVal($this->block_id), "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
+        $arFilter = Array(
+            "IBLOCK_ID"         => IntVal($this->block_id),
+            "ACTIVE_DATE"       => "Y",
+            "ACTIVE"            => "Y",
+        );
         $res      = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
         while ($ob = $res->GetNextElement()) {
-            $arFields               = $ob->GetFields();
-            $arProps                = $ob->GetProperties();
-            $items[$arFields["ID"]] = array(
-                "fields" => $arFields,
-                "props"  => $arProps,
-            );
+            $arFields = $ob->GetFields();
+            $items[$arFields["ID"]]["name"] = $arFields["NAME"];
         }
         return $items;
-    }
-
-    protected function getUsers($items)
-    {
-        $user_ids = array();
-        $data = array();
-        foreach ($items as $item) {
-            if (!empty($item["props"]["master"]["VALUE"]))
-                $user_ids[] = $item["props"]["master"]["VALUE"];
-            if (!empty($item["props"]["client"]["VALUE"]))
-                $user_ids[] = $item["props"]["client"]["VALUE"];
-        }
-        if (count($user_ids) > 0) {
-            $user_ids = array_unique($user_ids);
-            $filter   = Array("ID" => implode("|", $user_ids),);
-            $rsUsers  = CUser::GetList(($by = "ID"), ($order = "desc"), $filter);
-            while ($rsUser = $rsUsers->Fetch()) {
-                $data[$rsUser["ID"]]["NAME"] = $rsUser["NAME"].' '.$rsUser["SECOND_NAME"].' '.$rsUser["LAST_NAME"];
-            }
-            return $data;
-        }
     }
 
 }

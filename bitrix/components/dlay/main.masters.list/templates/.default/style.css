@@ -1,10 +1,30 @@
 .services-list {
     display: table;
     width: 100%;
+    margin-bottom: 30px;
 }
 .services-row {
     display: table-row;
 }
 .services-row > div {
     display: table-cell;
+    vertical-align: middle;
+    padding: 5px 0;
+}
+.service-row_image-wrap {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 100%;
+    text-align: center;
+}
+.service-row_image-wrap img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
