@@ -54,9 +54,11 @@ class ViewMasterList extends CBitrixComponent
     {
         $data    = array();
         $filter  = Array("GROUPS_ID" => array($this->group_id));
-        $rsUsers = CUser::GetList(($by = "ID"), ($order = "desc"), $filter);
+        $arParameters = array("SELECT" => array("UF_*"));
+        $rsUsers = CUser::GetList(($by = "ID"), ($order = "desc"), $filter, $arParameters);
         while ($rsUser = $rsUsers->Fetch()) {
             $data[$rsUser["ID"]]["name"] = $rsUser["NAME"] . ' ' . $rsUser["SECOND_NAME"] . ' ' . $rsUser["LAST_NAME"];
+            $data[$rsUser["ID"]]["status"] = $rsUser["UF_STATUS"];
             if (!empty($rsUser["PERSONAL_PHOTO"]))
                 $data[$rsUser["ID"]]["image"] = CFile::ResizeImageGet(
                     $rsUser["PERSONAL_PHOTO"],
