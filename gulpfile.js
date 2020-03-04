@@ -8,15 +8,17 @@ var sass = require('gulp-sass'),
     concat = require('gulp-concat');
 
 gulp.task('sass', function () {
-    return gulp.src('bitrix/components/dlay/main.masters.list/templates/.default/**/*.scss')
+    return gulp.src('bitrix/**/*.scss')
         .pipe(sass())
         .pipe(autoprefixer("last 2 version", "> 1%", "ie 8", "ie 7"))
-        .pipe(gulp.dest('bitrix/components/dlay/main.masters.list/templates/.default/'));
+        .pipe(gulp.dest(function(file) {
+            return file.base;
+        }));
 });
 
 
 gulp.task('watch', function() {
-    watch('bitrix/components/dlay/main.masters.list/templates/.default/**/*.scss', gulp.parallel('sass'));
+    watch('bitrix/**/*.scss', gulp.parallel('sass'));
 });
 
 //gulp.task("default", ["sass", "watch"]);
