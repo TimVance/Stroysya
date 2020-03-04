@@ -1,0 +1,7 @@
+.prsl-orders {
+  display: table;
+  width: 100%; }
+  .prsl-orders__item {
+    display: table-row; }
+    .prsl-orders__item > div {
+      display: table-cell; }
