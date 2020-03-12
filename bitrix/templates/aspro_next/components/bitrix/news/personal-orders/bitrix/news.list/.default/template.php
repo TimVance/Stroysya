@@ -12,6 +12,9 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 ?>
+
+<? if (count($arResult["ITEMS"]) == 0) { echo 'Вы пока не отправляли заявок'; return; } ?>
+
 <div class="news-list prsl-orders">
 <?if($arParams["DISPLAY_TOP_PAGER"]):?>
 	<?=$arResult["NAV_STRING"]?><br />

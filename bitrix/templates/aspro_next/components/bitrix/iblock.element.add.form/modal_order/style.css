@@ -6,7 +6,8 @@
     z-index: 1000;
     background-color: #fff;
     width: 90%;
-    max-width: 400px;
+    max-width: 800px;
+    padding: 40px 80px;
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
