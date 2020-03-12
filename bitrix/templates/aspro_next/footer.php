@@ -63,6 +63,48 @@
 			<?endif;?>
 			<?CNext::ShowPageType('footer');?>
 		</footer>
+        <div class="modal-order-wrapper">
+            <?$APPLICATION->IncludeComponent(
+                "bitrix:iblock.element.add.form",
+                "modal_order",
+                Array(
+                    "COMPONENT_TEMPLATE" => ".default",
+                    "CUSTOM_TITLE_DATE_ACTIVE_FROM" => "",
+                    "CUSTOM_TITLE_DATE_ACTIVE_TO" => "",
+                    "CUSTOM_TITLE_DETAIL_PICTURE" => "",
+                    "CUSTOM_TITLE_DETAIL_TEXT" => "",
+                    "CUSTOM_TITLE_IBLOCK_SECTION" => "",
+                    "CUSTOM_TITLE_NAME" => "",
+                    "CUSTOM_TITLE_PREVIEW_PICTURE" => "",
+                    "CUSTOM_TITLE_PREVIEW_TEXT" => "",
+                    "CUSTOM_TITLE_TAGS" => "",
+                    "DEFAULT_INPUT_SIZE" => "30",
+                    "DETAIL_TEXT_USE_HTML_EDITOR" => "N",
+                    "ELEMENT_ASSOC" => "CREATED_BY",
+                    "GROUPS" => "",
+                    "IBLOCK_ID" => "28",
+                    "IBLOCK_TYPE" => "services",
+                    "LEVEL_LAST" => "Y",
+                    "LIST_URL" => "",
+                    "MAX_FILE_SIZE" => "0",
+                    "MAX_LEVELS" => "100000",
+                    "MAX_USER_ENTRIES" => "100000",
+                    "PREVIEW_TEXT_USE_HTML_EDITOR" => "N",
+                    "PROPERTY_CODES" => array(0=>"277",1=>"278",2=>"280",3=>"281",4=>"282",5=>"NAME",6=>"DETAIL_TEXT",),
+                    "PROPERTY_CODES_REQUIRED" => array(),
+                    "RESIZE_IMAGES" => "Y",
+                    "SEF_MODE" => "N",
+                    "STATUS" => "ANY",
+                    "STATUS_NEW" => "N",
+                    "USER_MESSAGE_ADD" => "",
+                    "USER_MESSAGE_EDIT" => "",
+                    "USE_CAPTCHA" => "N",
+                    "AJAX_MODE" => "Y"
+                )
+            );?>
+        </div>
+        <div class="overlay"></div>
+
 		<div class="bx_areas">
 			<?CNext::ShowPageType('bottom_counter');?>
 		</div>
