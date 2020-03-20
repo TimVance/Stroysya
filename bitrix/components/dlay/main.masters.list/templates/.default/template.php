@@ -14,6 +14,12 @@ $this->setFrameMode(true);
     </div>
 <? endif; ?>
 
+<?php
+global $USER;
+$auth = false;
+if ($USER->IsAuthorized()) $auth = true;
+?>
+
 <? if (count($arResult["masters"]) > 0): ?>
     <div class="services-list">
         <div class="services-row">
@@ -37,7 +43,7 @@ $this->setFrameMode(true);
                     <? endforeach; ?>
                 </div>
                 <div class="services-row_status"><span<?=($item["status"] == 20 ? ' class="busy"' : '')?>><?=($item["status"] == 20 ? 'Занят' : 'Свободен')?></span></div>
-                <div class="services-row_button"><button>Предложить работу</button></div>
+                <div class="services-row_button call-modal-master" data-id="<?=$id_user?>"><button>Предложить работу</button></div>
             </div>
         <? endforeach; ?>
     </div>

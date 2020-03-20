@@ -64,6 +64,12 @@
 			<?CNext::ShowPageType('footer');?>
 		</footer>
         <div class="modal-order-wrapper">
+            <div class="close-modal-order">x</div>
+            <h3>Оформите заявку</h3>
+            <?
+            global $USER;
+            if ($USER->IsAuthorized()):
+            ?>
             <?$APPLICATION->IncludeComponent(
                 "bitrix:iblock.element.add.form",
                 "modal_order",
@@ -72,7 +78,7 @@
                     "CUSTOM_TITLE_DATE_ACTIVE_FROM" => "",
                     "CUSTOM_TITLE_DATE_ACTIVE_TO" => "",
                     "CUSTOM_TITLE_DETAIL_PICTURE" => "",
-                    "CUSTOM_TITLE_DETAIL_TEXT" => "",
+                    "CUSTOM_TITLE_DETAIL_TEXT" => "Описание работ",
                     "CUSTOM_TITLE_IBLOCK_SECTION" => "",
                     "CUSTOM_TITLE_NAME" => "",
                     "CUSTOM_TITLE_PREVIEW_PICTURE" => "",
@@ -102,6 +108,25 @@
                     "AJAX_MODE" => "Y"
                 )
             );?>
+            <? else: ?>
+                <?$APPLICATION->IncludeComponent(
+                    "aspro:auth.next",
+                    "main",
+                    Array(
+                        "PERSONAL" => "/personal/",
+                        "SEF_FOLDER" => "",
+                        "SEF_MODE" => "Y",
+                        "SEF_URL_TEMPLATES" => Array(
+                            "auth" => "/auth/",
+                            "change_password" => "",
+                            "confirm" => "",
+                            "confirm_registration" => "",
+                            "forgot_password" => "/auth/forgot-password/",
+                            "registration" => "/auth/registration/"
+                        )
+                    )
+                );?>
+            <? endif; ?>
         </div>
         <div class="overlay"></div>
 

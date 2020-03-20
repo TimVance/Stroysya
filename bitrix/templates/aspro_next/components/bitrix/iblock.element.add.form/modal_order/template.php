@@ -26,9 +26,23 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 		<?if (is_array($arResult["PROPERTY_LIST"]) && !empty($arResult["PROPERTY_LIST"])):?>
 		<div class="data-table-inner">
 			<?foreach ($arResult["PROPERTY_LIST"] as $propertyID):?>
+
+                <?
+                    if ($propertyID == 280) {
+                        GLOBAl $USER;
+                        echo '<input type="hidden" name="PROPERTY[' . $propertyID . '][0]" value="' . $USER->getId() . '">';
+                        continue;
+                    }
+                    elseif ($propertyID == 281) {
+                        echo '<input type="hidden" name="PROPERTY[' . $propertyID . '][0]" value="">';
+                        continue;
+                    }
+                ?>
+
 				<div class="form-group">
 					<div class="field-title"><?if (intval($propertyID) > 0):?><?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?><?else:?><?=!empty($arParams["CUSTOM_TITLE_".$propertyID]) ? $arParams["CUSTOM_TITLE_".$propertyID] : GetMessage("IBLOCK_FIELD_".$propertyID)?><?endif?><?if(in_array($propertyID, $arResult["PROPERTY_REQUIRED"])):?><span class="starrequired">*</span><?endif?></div>
 					<div class="field-wrapper">
+
 						<?
 						if (intval($propertyID) > 0)
 						{
@@ -224,7 +238,7 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 									$value = intval($propertyID) > 0 ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE"] : $arResult["ELEMENT"][$propertyID];
 									?>
 						<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] : $i?>]" value="<?=$value?>" />
-						<input type="file" size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>"  name="PROPERTY_FILE_<?=$propertyID?>_<?=$arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] : $i?>" /><br />
+						<input type="file" multiple size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>"  name="PROPERTY_FILE_<?=$propertyID?>_<?=$arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] : $i?>" /><br />
 									<?
 
 									if (!empty($value) && is_array($arResult["ELEMENT_FILES"][$value]))

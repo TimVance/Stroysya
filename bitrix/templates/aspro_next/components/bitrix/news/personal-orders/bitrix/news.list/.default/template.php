@@ -20,7 +20,7 @@ $this->setFrameMode(true);
 	<?=$arResult["NAV_STRING"]?><br />
 <?endif;?>
 <div class="prsl-orders__item">
-    <div class="prsl-orders__name">Имя</div>
+    <div class="prsl-orders__name">Наименование</div>
     <div class="prsl-orders__anons">Описание</div>
     <div class="prsl-orders__date"><?=$arResult["ITEMS"][0]["DISPLAY_PROPERTIES"]["date"]["NAME"]?></div>
     <div class="prsl-orders__price"><?=$arResult["ITEMS"][0]["DISPLAY_PROPERTIES"]["price"]["NAME"]?></div>

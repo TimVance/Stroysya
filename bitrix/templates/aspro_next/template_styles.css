@@ -550,7 +550,7 @@ table.colored_table{width:100%;box-sizing:border-box;-moz-box-sizing:border-box;
 	color:#fff;
 	border-bottom:2px solid #212121 !important;
 	background:#848484 !important;
-	background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;
+	background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodï¿½EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+) !important;
 	background:-moz-linear-gradient(top, #848484 0%, #464646 100%) !important;
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#848484), color-stop(100%,#464646)) !important;
 	background:-webkit-linear-gradient(top, #848484 0%,#464646 100%) !important;
@@ -3343,7 +3343,7 @@ div.item-title a span {padding:0px 0px 0px;}
 .more_text_ajax:after{width:19px;height:19px;left:5px;margin-top:-10px;top:50%;background:#ddd url('images/svg/Show_more.svg') center no-repeat;-webkit-transition:background 0.7s ease-in-out;-moz-transition:background 0.7s ease-in-out; -o-transition:background 0.7s ease-in-out; transition:background 0.7s ease-in-out;}
 .more_text_ajax.loading:after{-webkit-animation:spinner .5s linear infinite !important;animation:spinner .5s linear infinite !important;-webkit-transform-style:preserve-3d;-moz-transform-style:preserve-3d; -ms-transform-style:preserve-3d; transform-style:preserve-3d;}
 .more_text_ajax:hover:after, .ajax_load_btn:hover .more_text_ajax:after{-webkit-animation:spinner .5s ease-out 1;animation:spinner .5s ease 1;-webkit-transform-style:preserve-3d;-moz-transform-style:preserve-3d; -ms-transform-style:preserve-3d; transform-style:preserve-3d;}
-/* WebKit è Opera */
+/* WebKit ï¿½ Opera */
 @-webkit-keyframes spinner1{
 	from{
 		-webkit-transform:rotate(360deg);
@@ -7236,3 +7236,48 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .bx-touch .bx_ordercart .bx_sort_container span{display:inline-block;}
 .bx-touch .bx_ordercart .bx_sort_container > span{display:none;}
 .bx-touch #basket_form .bx_ordercart .bx_sort_container a{width:auto;margin-bottom:0px;border:none;padding:7px 0px 6px 0px;margin-right:15px;}
+
+.modal-order-wrapper {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1000;
+	background-color: #fff;
+	width: 90%;
+	max-width: 800px;
+	padding: 40px 80px;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+.overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	cursor: pointer;
+	background-color: rgba(0,0,0,.3);
+}
+.close-modal-order {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	font-size: 20px;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	padding: 3px 6px;
+	opacity: .5;
+}
+.close-modal-order:hover {
+	opacity: 1;
+}
+.modal-order-wrapper h3 {
+	margin-top: 0;
+}
