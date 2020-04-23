@@ -7245,8 +7245,8 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	z-index: 1000;
 	background-color: #fff;
 	width: 90%;
-	max-width: 800px;
-	padding: 40px 80px;
+	max-width: 600px;
+	padding: 40px 60px;
 	-webkit-transform: translate(-50%, -50%);
 	-moz-transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
@@ -7280,4 +7280,73 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 }
 .modal-order-wrapper h3 {
 	margin-top: 0;
+	text-align: center;
+}
+
+.modal-order-wrapper .field-wrapper {
+	position: relative;
+}
+
+.modal-order-wrapper .calendar-icon {
+	position: absolute;
+	right: 10px;
+	top: 8px;
+}
+
+.modal-order-wrapper .form-group278 {
+	display: inline-block;
+	width: calc(50% - 10px);
+	margin-right: 15px;
+}
+
+.modal-order-wrapper .form-group277 {
+	display: inline-block;
+	width: calc(50% - 10px);
+}
+
+.modal-order-wrapper input[type="submit"] {
+	border: 2px solid #e41d3e !important;
+	width: 280px;
+	margin: auto;
+	display: block;
+	line-height: 40px;
+	border-radius: 5px;
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+}
+
+.modal-order-wrapper input[type="submit"]:hover {
+	color: #fff;
+	background-color: #e41d3e;
+}
+
+.modal-order-wrapper input[type="text"],
+.modal-order-wrapper input[type="password"],
+.modal-order-wrapper input[type="email"],
+.modal-order-wrapper input[type="tel"],
+.modal-order-wrapper textarea {
+	border: 1px solid rgba(141, 141, 141, 0.5);
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+}
+
+.modal-order-wrapper input[type="text"]:focus,
+.modal-order-wrapper input[type="password"]:focus,
+.modal-order-wrapper input[type="email"]:focus,
+.modal-order-wrapper input[type="tel"]:focus,
+.modal-order-wrapper textarea:focus {
+	border: 1px solid #e41d3e;
+}
+
+.modal-order-wrapper .notetext {
+	display: block;
+	color: green;
+	font-size: 16px;
+	text-align: center;
 }

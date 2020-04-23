@@ -29,35 +29,47 @@ class ViewMasterList extends CBitrixComponent
         }
     }
 
-    protected function checkModules()
+    private function checkModules()
     {
         if (!Loader::includeModule('iblock'))
             throw new SystemException(Loc::getMessage('CPS_MODULE_NOT_INSTALLED', array('#NAME#' => 'iblock')));
     }
 
-    protected function getResult()
+    private function getResult()
     {
         if ($this->errors)
             throw new SystemException(current($this->errors));
 
-        if ($this->StartResultCache()) {
-            $arResult             = array();
-            $arResult["sections"] = $this->getAllSections();
-            $arResult["masters"]  = $this->getAllUsers();
-            $arResult["services"] = $this->getListServicesByUsers($arResult["masters"]);
-            $this->arResult       = $arResult;
+
+        $request = \Bitrix\Main\Context::getCurrent()->getRequest();
+        $post    = $request->getPostList();
+        if ($post["ajax"] && $post["component"] == "services") {
+            if (!empty($post["cats"]))
+                $cats = explode(",", $post["cats"]);
+            $arResult       = array();
+            $arResult       = $this->getUsersByFilter($cats);
+            $this->arResult = $arResult;
+        }
+        else {
+            if ($this->StartResultCache()) {
+                $arResult             = array();
+                $arResult["sections"] = $this->getAllSections();
+                $arResult["masters"]  = $this->getAllUsers();
+                $arResult["services"] = $this->getListServicesByUsers($arResult["masters"]);
+                $this->arResult       = $arResult;
+            }
         }
     }
 
     // Получение всех пользователей группы мастера
-    protected function getAllUsers()
+    private function getAllUsers()
     {
-        $data    = array();
-        $filter  = Array("GROUPS_ID" => array($this->group_id));
+        $data         = array();
+        $filter       = array("GROUPS_ID" => array($this->group_id));
         $arParameters = array("SELECT" => array("UF_*"));
-        $rsUsers = CUser::GetList(($by = "ID"), ($order = "desc"), $filter, $arParameters);
+        $rsUsers      = CUser::GetList(($by = "ID"), ($order = "desc"), $filter, $arParameters);
         while ($rsUser = $rsUsers->Fetch()) {
-            $data[$rsUser["ID"]]["name"] = $rsUser["NAME"] . ' ' . $rsUser["SECOND_NAME"] . ' ' . $rsUser["LAST_NAME"];
+            $data[$rsUser["ID"]]["name"]   = $rsUser["NAME"] . ' ' . $rsUser["SECOND_NAME"] . ' ' . $rsUser["LAST_NAME"];
             $data[$rsUser["ID"]]["status"] = $rsUser["UF_STATUS"];
             if (!empty($rsUser["PERSONAL_PHOTO"]))
                 $data[$rsUser["ID"]]["image"] = CFile::ResizeImageGet(
@@ -70,7 +82,7 @@ class ViewMasterList extends CBitrixComponent
     }
 
     // Получение услуг мастеров
-    protected function getListServicesByUsers($masters)
+    private function getListServicesByUsers($masters)
     {
         $ids = array();
         foreach ($masters as $id => $master) {
@@ -78,14 +90,14 @@ class ViewMasterList extends CBitrixComponent
         }
         if (count($ids) > 0) {
             $items    = array();
-            $arSelect = Array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
-            $arFilter = Array(
+            $arSelect = array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
+            $arFilter = array(
                 "IBLOCK_ID"         => IntVal($this->block_id),
                 "ACTIVE_DATE"       => "Y",
                 "ACTIVE"            => "Y",
                 "=PROPERTY_masters" => $ids
             );
-            $res      = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
+            $res      = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 50), $arSelect);
             while ($ob = $res->GetNextElement()) {
                 $arFields = $ob->GetFields();
                 $arProps  = $ob->GetProperties();
@@ -93,25 +105,76 @@ class ViewMasterList extends CBitrixComponent
                     $items[$user][$arFields["ID"]]["name"] = $arFields["NAME"];
                 }
             }
+            //echo '<pre>';
+            //print_r($items);
+            //echo '</pre>';
             return $items;
         }
     }
 
-    protected function getAllSections()
+    private function getAllSections()
     {
         $items    = array();
-        $arSelect = Array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
-        $arFilter = Array(
-            "IBLOCK_ID"         => IntVal($this->block_id),
-            "ACTIVE_DATE"       => "Y",
-            "ACTIVE"            => "Y",
+        $arSelect = array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
+        $arFilter = array(
+            "IBLOCK_ID"   => IntVal($this->block_id),
+            "ACTIVE_DATE" => "Y",
+            "ACTIVE"      => "Y",
         );
-        $res      = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize" => 50), $arSelect);
+        $res      = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 50), $arSelect);
         while ($ob = $res->GetNextElement()) {
-            $arFields = $ob->GetFields();
+            $arFields                       = $ob->GetFields();
             $items[$arFields["ID"]]["name"] = $arFields["NAME"];
         }
         return $items;
+    }
+
+    private function getUsersByFilter($cats)
+    {
+        $items    = array();
+        $arSelect = array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
+        $arFilter = array(
+            "IBLOCK_ID"   => IntVal($this->block_id),
+            "ACTIVE_DATE" => "Y",
+            "ACTIVE"      => "Y",
+            "=ID"         => $cats
+        );
+        $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 50), $arSelect);
+        $masters = array();
+        while ($ob = $res->GetNextElement()) {
+            $arFields = $ob->GetFields();
+            $arProps  = $ob->GetProperties();
+            foreach ($arProps["masters"]["VALUE"] as $user) {
+                $masters[$user] = $user;
+            }
+        }
+        return array(
+            "ajax" => true,
+            "masters" => (!empty($masters) ? $this->getUsers($masters) : array()),
+            "services" => (!empty($masters) ? $this->getListServicesByUsers($masters) : array()),
+        );
+    }
+
+    // Получение всех пользователей группы мастера
+    private function getUsers($items = array())
+    {
+        //print_r($items);
+        $data         = array();
+        $filter       = array("ID" => implode('|', $items));
+        $arParameters = array("SELECT" => array("UF_*"));
+        $rsUsers      = CUser::GetList(($by = "ID"), ($order = "desc"), $filter, $arParameters);
+        while ($rsUser = $rsUsers->Fetch()) {
+            $data[$rsUser["ID"]]["name"]   = $rsUser["NAME"] . ' ' . $rsUser["SECOND_NAME"] . ' ' . $rsUser["LAST_NAME"];
+            $data[$rsUser["ID"]]["status"] = $rsUser["UF_STATUS"];
+            if (!empty($rsUser["PERSONAL_PHOTO"]))
+                $data[$rsUser["ID"]]["image"] = CFile::ResizeImageGet(
+                    $rsUser["PERSONAL_PHOTO"],
+                    array("width" => 64, "height" => 64),
+                    BX_RESIZE_IMAGE_EXACT
+                );
+        }
+        //print_r($data);
+        return $data;
     }
 
 }

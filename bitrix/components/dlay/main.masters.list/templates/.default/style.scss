@@ -1,14 +1,21 @@
 .services-list {
     display: table;
     width: 100%;
+    opacity: 1;
     margin-bottom: 30px;
+    transition: all .3s;
+
+    &.load {
+        opacity: .7;
+    }
+
 }
 .services-row {
     display: table-row;
 
     &:first-child {
         text-align: center;
-        font-width: bold;
+        font-weight: bold;
     }
 
     & > div {
@@ -24,14 +31,38 @@
         overflow: hidden;
         border-radius: 100%;
         text-align: center;
+        display: inline-block;
+        vertical-align: middle;
+
+        img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .no-photo-master {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: url("/bitrix/templates/aspro_next/images/svg/icons_mask.svg") 0px 0px no-repeat;
+            background-color: #107bb1;
+            background-position: -100px 0px;
+        }
+
     }
-    &_image-wrap img {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
+
+    &_name-wrap {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        white-space: nowrap;
+    }
+
+    &_button {
+        text-align: right;
     }
 
     &_button button {
@@ -41,6 +72,8 @@
         border-radius: 5px;
         font-weight: normal;
         cursor: pointer;
+        display: inline-block;
+        margin: auto;
         transition: all .3s;
 
         &:hover {
@@ -67,17 +100,24 @@
     margin-bottom: 30px;
 
     &_item {
-        border: 1px solid #94A9FB;
+        border: 2px solid #94A9FB;
         display: inline-block;
         padding: 10px 20px;
         border-radius: 23px;
         margin-right: 10px;
+        margin-top: 10px;
         cursor: pointer;
         transition: all .3s;
+        box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.35);
 
-        &:hover {
+        &.selected {
             background-color: #94a9fb;
             color: #fff;
+        }
+
+        &:hover {
+            border: 2px solid #e41d3e;
+            box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.55);
         }
     }
 }

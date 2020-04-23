@@ -3,13 +3,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $this->setFrameMode(true);
 ?>
 
-<pre style="display: none">'; <? print_r($arResult); ?> </pre>
-
 <? if (count($arResult["sections"]) > 0): ?>
     <h2>Услуги сервиса</h2>
     <div class="sections-list">
     <? foreach ($arResult["sections"] as $id_section => $section): ?>
-        <div class="sections-list_item"><?=$section["name"]?></div>
+        <div data-category-id="<?=$id_section?>" class="sections-list_item"><?=$section["name"]?></div>
     <? endforeach; ?>
     </div>
 <? endif; ?>
@@ -20,23 +18,30 @@ $auth = false;
 if ($USER->IsAuthorized()) $auth = true;
 ?>
 
+<? echo '<div class="services-list__wrapper">'; ?>
 <? if (count($arResult["masters"]) > 0): ?>
     <div class="services-list">
         <div class="services-row">
-            <div class="services-row_image"></div>
-            <div class="services-row_name">Имя</div>
+            <div class="services-row_fio">Мастер</div>
             <div class="services-row_list">Услуги мастера</div>
             <div class="status">Статус</div>
             <div class="services-row_button"></div>
         </div>
         <? foreach ($arResult["masters"] as $id_user => $item): ?>
+            <? if(empty($arResult["services"][$id_user])) continue; ?>
             <div class="services-row">
-                <div class="services-row_image">
-                    <div class="services-row_image-wrap">
-                        <a href="#"><img src="<?=$item["image"]["src"];?>" alt="<?=$item["name"];?>"></a>
-                    </div>
+                <div class="services-row_fio">
+                    <span class="services-row_image-wrap">
+                        <? if (!empty($item["image"]["src"])): ?>
+                            <a href="#"><img src="<?=$item["image"]["src"];?>" alt="<?=$item["name"];?>"></a>
+                        <? else: ?>
+                            <a href="#"><span class="no-photo-master"></span></a>
+                        <? endif; ?>
+                    </span>
+                    <span class="services-row_name-wrap">
+                        <a href="#"><?=$item["name"];?></a>
+                    </span>
                 </div>
-                <div class="services-row_name"><a href="#"><?=$item["name"];?></a></div>
                 <div class="services-row_list">
                     <? foreach ($arResult["services"][$id_user] as $id_service => $service): ?>
                         <div class="services-row_list-item"><?=$service["name"]?></div>
@@ -47,4 +52,7 @@ if ($USER->IsAuthorized()) $auth = true;
             </div>
         <? endforeach; ?>
     </div>
+<? else: ?>
+    Услуг не найдено!
 <? endif; ?>
+</div>

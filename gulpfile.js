@@ -7,14 +7,13 @@ var sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     concat = require('gulp-concat');
 
-var path = 'bitrix/templates/aspro_next/components/bitrix/news/personal-orders/bitrix/news.list/.default/';
+var path = 'bitrix/components/dlay/main.masters.list/templates/.default/';
 
 gulp.task('sass', function () {console.log('sass');
     return gulp.src(path + '/**/*.scss')
         .pipe(sass())
         .pipe(autoprefixer("last 2 version", "> 1%", "ie 8", "ie 7"))
         .pipe(gulp.dest(function(file) {
-            console.log(file.base);
             return file.base;
         }));
 });
