@@ -68,11 +68,10 @@
             <h3>Оформление заявки</h3>
             <?
             global $USER;
-            if ($USER->IsAuthorized()):
-            ?>
-            <?$APPLICATION->IncludeComponent(
+            if ($USER->IsAuthorized()) {
+$APPLICATION->IncludeComponent(
 	"dlay:iblock.element.add.form", 
-	"modal",
+	"modal", 
 	array(
 		"COMPONENT_TEMPLATE" => "modal",
 		"CUSTOM_TITLE_DATE_ACTIVE_FROM" => "",
@@ -87,7 +86,9 @@
 		"DEFAULT_INPUT_SIZE" => "30",
 		"DETAIL_TEXT_USE_HTML_EDITOR" => "N",
 		"ELEMENT_ASSOC" => "CREATED_BY",
-		"GROUPS" => "",
+		"GROUPS" => array(
+			0 => "6",
+		),
 		"IBLOCK_ID" => "28",
 		"IBLOCK_TYPE" => "services",
 		"LEVEL_LAST" => "Y",
@@ -113,7 +114,7 @@
 		),
 		"RESIZE_IMAGES" => "Y",
 		"SEF_MODE" => "N",
-		"STATUS" => "ANY",
+		"STATUS" => "INACTIVE",
 		"STATUS_NEW" => "N",
 		"USER_MESSAGE_ADD" => "Спасибо! Ваша заявка успешно отправлена. Скоро наш менеджер с Вами свяжется",
 		"USER_MESSAGE_EDIT" => "",
@@ -122,7 +123,7 @@
 	),
 	false
 );?>
-            <? else: ?>
+            <? } else { ?>
                 <?$APPLICATION->IncludeComponent(
                     "aspro:auth.next",
                     "main",
@@ -140,7 +141,7 @@
                         )
                     )
                 );?>
-            <? endif; ?>
+            <? } ?>
         </div>
         <div class="overlay"></div>
 

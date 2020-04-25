@@ -200,3 +200,77 @@ list($bPhoneAuthSupported, $bPhoneAuthShow, $bPhoneAuthRequired, $bPhoneAuthUse)
 	})
 	</script>
 </div>
+
+
+<?php
+
+$user_id = $USER->getId();
+$group_id = 8;
+
+if(in_array($group_id, CUser::GetUserGroup($user_id))) {
+    echo '<div class="border_block">';
+    echo '<form method="POST">';
+    echo '<input type="hidden" name="edit_master" value="true">';
+    echo '<h3>Настройки мастера</h3>';
+
+    $rsUser = CUser::GetByID($user_id);
+    $arUser = $rsUser->Fetch();
+
+    $services = array();
+
+    // Получение сервиса услуг
+    $arSelect = Array("ID", "IBLOCK_ID", "NAME");
+    $arFilter = Array("IBLOCK_ID" => 27);
+    $res = CIBlockElement::GetList(Array(), $arFilter, false, array(), $arSelect);
+    while($ob = $res->GetNextElement()){
+        $arFields = $ob->GetFields();
+        $arProps = $ob->GetProperties();
+        $services[$arFields["ID"]]["NAME"] = $arFields["NAME"];
+        $services[$arFields["ID"]]["CHECKED"] = (in_array($user_id, $arProps["masters"]["VALUE"]) ? "checked" : "");
+    }
+    ?>
+
+    <div class="form-control">
+        <label>Установка фото</label>
+        <input type="file">
+    </div>
+    <div class="form-control">
+        <label>Статус</label>
+        <select name="m_status">
+            <option value="19">Свободен</option>
+            <option value="20">Занят</option>
+        </select>
+    </div>
+    <div class="form-control">
+        <label>Обо мне</label>
+        <textarea name="text" cols="30" rows="10"></textarea>
+    </div>
+    <div class="form-control">
+        <label>Список услуг</label>
+        <?
+        foreach ($services as $i => $service) {
+            echo '<label><input '.$service["CHECKED"].' type="checkbox" name="services[]" value="'.$i.'"/> '.$service["NAME"].'</label>';
+        }
+        ?>
+    </div>
+    <div class="but-r">
+        <button class="btn btn-default" type="submit" name="save" value="Сохранить изменения"><span>Сохранить изменения</span></button>
+    </div>
+    </form>
+    </div>
+<?}?>
+
+<?php
+
+    if(!empty($_POST["edit_master"])) {
+
+        $request = \Bitrix\Main\Context::getCurrent()->getRequest();
+        $request->getPostList()->toArray(); // массив post параметров
+
+        $status = $request->get("m_status");
+        $text = $request->get("text");
+        $services = $request->get("services");
+
+        print_r($services);
+
+    }
