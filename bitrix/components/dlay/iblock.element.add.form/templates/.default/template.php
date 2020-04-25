@@ -12,44 +12,28 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(false);
-echo 'test';
+
 if (!empty($arResult["ERRORS"])):?>
 	<?ShowError(implode("<br />", $arResult["ERRORS"]))?>
-
 <?endif;
 if (strlen($arResult["MESSAGE"]) > 0):?>
-	<? echo '<div class="notetext">Спасибо! Ваша заявка успешно отправлена. <br />Скоро наш менеджер с Вами свяжется</div>'; ?>
-<?else:?>
+	<?ShowNote($arResult["MESSAGE"])?>
+<?endif?>
 <form name="iblock_add" action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data">
 	<?=bitrix_sessid_post()?>
 	<?if ($arParams["MAX_FILE_SIZE"] > 0):?><input type="hidden" name="MAX_FILE_SIZE" value="<?=$arParams["MAX_FILE_SIZE"]?>" /><?endif?>
-	<div class="data-table">
+	<table class="data-table" style="width: 90%">
+		<thead>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+		</thead>
 		<?if (is_array($arResult["PROPERTY_LIST"]) && !empty($arResult["PROPERTY_LIST"])):?>
-		<div class="data-table-inner">
+		<tbody>
 			<?foreach ($arResult["PROPERTY_LIST"] as $propertyID):?>
-                <?
-                    if ($propertyID == 280) {
-                        GLOBAl $USER;
-                        echo '<input type="hidden" name="PROPERTY[' . $propertyID . '][0]" value="' . $USER->getId() . '">';
-                        continue;
-                    }
-                    elseif ($propertyID == 281) {
-                        echo '<input type="hidden" name="PROPERTY[' . $propertyID . '][0]" value="'.$arResult["ELEMENT_PROPERTIES"][$propertyID][0]["VALUE"].'">';
-                        continue;
-                    }
-                    elseif ($propertyID == 277) {
-                        echo '<div class="form-group form-group277">';
-                            echo '<div class="field-title">'.$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"].'</div>';
-                            echo '<div class="field-wrapper"><input onclick="BX.calendar({node: this, value: new Date(), field: this, bTime: false});" type="text" name="PROPERTY[' . $propertyID . '][0]" value="'.date("d.m.Y", time()).'"></div>';
-                        echo '</div>';
-                        continue;
-                    }
-                ?>
-
-				<div class="form-group form-group<?=$propertyID?>">
-					<div class="field-title"><?if (intval($propertyID) > 0):?><?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?><?else:?><?=!empty($arParams["CUSTOM_TITLE_".$propertyID]) ? $arParams["CUSTOM_TITLE_".$propertyID] : GetMessage("IBLOCK_FIELD_".$propertyID)?><?endif?><?if(in_array($propertyID, $arResult["PROPERTY_REQUIRED"])):?><span class="starrequired">*</span><?endif?></div>
-					<div class="field-wrapper">
-
+				<tr>
+					<td><?if (intval($propertyID) > 0):?><?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?><?else:?><?=!empty($arParams["CUSTOM_TITLE_".$propertyID]) ? $arParams["CUSTOM_TITLE_".$propertyID] : GetMessage("IBLOCK_FIELD_".$propertyID)?><?endif?><?if(in_array($propertyID, $arResult["PROPERTY_REQUIRED"])):?><span class="starrequired">*</span><?endif?></td>
+					<td>
 						<?
 						if (intval($propertyID) > 0)
 						{
@@ -120,7 +104,7 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 												"FORM_NAME"=>"iblock_add",
 											),
 										));
-								?><?
+								?><br /><?
 								}
 							break;
 							case "TAGS":
@@ -220,7 +204,7 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 										$value = "";
 									}
 								?>
-								<input type="text" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]; ?>" value="<?=$value?>" /><?
+								<input type="text" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]; ?>" value="<?=$value?>" /><br /><?
 								if($arResult["PROPERTY_LIST_FULL"][$propertyID]["USER_TYPE"] == "DateTime"):?><?
 									$APPLICATION->IncludeComponent(
 										'bitrix:main.calendar',
@@ -235,17 +219,17 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 									);
 									?><br /><small><?=GetMessage("IBLOCK_FORM_DATE_FORMAT")?><?=FORMAT_DATETIME?></small><?
 								endif
-								?><?
+								?><br /><?
 								}
 							break;
 
 							case "F":
-								for ($i = 0; $i<1; $i++)
+								for ($i = 0; $i<$inputNum; $i++)
 								{
 									$value = intval($propertyID) > 0 ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE"] : $arResult["ELEMENT"][$propertyID];
 									?>
 						<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] : $i?>]" value="<?=$value?>" />
-						<input type="file" multiple size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>"  name="PROPERTY_FILE_<?=$propertyID?>[]" /><br />
+						<input type="file" size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>"  name="PROPERTY_FILE_<?=$propertyID?>_<?=$arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] : $i?>" /><br />
 									<?
 
 									if (!empty($value) && is_array($arResult["ELEMENT_FILES"][$value]))
@@ -257,7 +241,7 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 										if ($arResult["ELEMENT_FILES"][$value]["IS_IMAGE"])
 										{
 											?>
-					                        <img src="<?=$arResult["ELEMENT_FILES"][$value]["SRC"]?>" height="<?=$arResult["ELEMENT_FILES"][$value]["HEIGHT"]?>" width="<?=$arResult["ELEMENT_FILES"][$value]["WIDTH"]?>" border="0" /><br />
+					<img src="<?=$arResult["ELEMENT_FILES"][$value]["SRC"]?>" height="<?=$arResult["ELEMENT_FILES"][$value]["HEIGHT"]?>" width="<?=$arResult["ELEMENT_FILES"][$value]["WIDTH"]?>" border="0" /><br />
 											<?
 										}
 										else
@@ -349,8 +333,8 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 								endswitch;
 							break;
 						endswitch;?>
-					</div>
-				</div>
+					</td>
+				</tr>
 			<?endforeach;?>
 			<?if($arParams["USE_CAPTCHA"] == "Y" && $arParams["ID"] <= 0):?>
 				<tr>
@@ -365,7 +349,7 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 					<td><input type="text" name="captcha_word" maxlength="50" value=""></td>
 				</tr>
 			<?endif?>
-		</div>
+		</tbody>
 		<?endif?>
 		<tfoot>
 			<tr>
@@ -383,6 +367,5 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 				</td>
 			</tr>
 		</tfoot>
-	</div>
+	</table>
 </form>
-<?endif?>

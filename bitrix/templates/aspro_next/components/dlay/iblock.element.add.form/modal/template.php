@@ -12,10 +12,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(false);
-echo 'test';
+
 if (!empty($arResult["ERRORS"])):?>
 	<?ShowError(implode("<br />", $arResult["ERRORS"]))?>
-
 <?endif;
 if (strlen($arResult["MESSAGE"]) > 0):?>
 	<? echo '<div class="notetext">Спасибо! Ваша заявка успешно отправлена. <br />Скоро наш менеджер с Вами свяжется</div>'; ?>
@@ -244,8 +243,8 @@ if (strlen($arResult["MESSAGE"]) > 0):?>
 								{
 									$value = intval($propertyID) > 0 ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE"] : $arResult["ELEMENT"][$propertyID];
 									?>
-						<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] ? $arResult["ELEMENT_PROPERTIES"][$propertyID][$i]["VALUE_ID"] : $i?>]" value="<?=$value?>" />
-						<input type="file" multiple size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>"  name="PROPERTY_FILE_<?=$propertyID?>[]" /><br />
+                                    <input type="hidden" name="PROPERTY[<?=$propertyID?>][0]" value="<?=$value?>" />
+						            <input type="file" multiple size="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>"  name="PROPERTY_FILE_<?=$propertyID?>[]" /><br />
 									<?
 
 									if (!empty($value) && is_array($arResult["ELEMENT_FILES"][$value]))

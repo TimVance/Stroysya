@@ -7350,3 +7350,101 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 	font-size: 16px;
 	text-align: center;
 }
+
+.modal-order-wrapper .form-group279 {
+	display: none;
+}
+
+.master_name {
+	margin: 0;
+}
+
+.master_photo svg {
+	width: 240px;
+	height: 240px;
+}
+
+.flexBetween {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.master_photo {
+	width: 240px;
+	margin-right: 20px;
+	margin-top: 20px;
+	text-align: center;
+}
+
+.master-info {
+	width: calc(100% - 260px);
+	margin-top: 20px;
+}
+
+.master-info .status {
+	display: block;
+	padding: 2px 5px;
+	border-radius: 4px;
+	border: 2px solid #31FF00;
+	text-align: center;
+	width: 200px;
+}
+
+.master-info .status.busy {
+	border: 2px solid #e41d3e;
+}
+
+.services_list {
+	margin-top: 10px;
+}
+
+.services_list .title {
+	font-weight: bold;
+}
+
+.master-button button {
+	background-color: #e41d3e;
+	color: #fff;
+	padding: 6px 15px;
+	border-radius: 5px;
+	font-weight: normal;
+	cursor: pointer;
+	display: inline-block;
+	margin: auto;
+	-webkit-transition: all .3s;
+	transition: all .3s;
+	margin-top: 20px;
+}
+
+.master-button button:hover {
+	background-color: #333;
+}
+
+.prsl-orders .prsl-orders__item:first-child > div {
+	font-weight: bold;
+	color: #2f6896;
+	padding: 10px;
+}
+
+.prsl-orders__item:nth-child(n + 2) > div {
+	padding: 10px;
+	border-bottom: 1px solid #f2f2f2;
+	background-color: #f9f9f9;
+}
+
+.prsl-orders__name {
+	max-width: 160px;
+}
+
+.prsl-orders__date, .prsl-orders__price, .prsl-orders__status {
+	text-align: center;
+}
+
+.prsl-orders__status span {
+	padding: 5px 10px;
+	color: #fff;
+	border-radius: 8px;
+	width: 160px;
+	display: block;
+}

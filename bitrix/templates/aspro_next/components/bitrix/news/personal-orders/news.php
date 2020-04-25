@@ -57,8 +57,19 @@ $this->setFrameMode(true);
 
     GLOBAL $arFilter;
     GLOBAL $USER;
+
     $user_id = $USER->getId();
-    $arFilter["=PROPERTY_user"] = $user_id;
+    $group_id = 8;
+
+    if(in_array($group_id, CUser::GetUserGroup($user_id))) {
+        // Если это мастер
+        $arFilter["=PROPERTY_master"] = $user_id;
+    }
+    else {
+        // Если это заказчик
+        $arFilter["=PROPERTY_user"] = $user_id;
+    }
+
 
 ?>
 

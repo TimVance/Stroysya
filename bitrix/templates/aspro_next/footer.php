@@ -71,10 +71,10 @@
             if ($USER->IsAuthorized()):
             ?>
             <?$APPLICATION->IncludeComponent(
-	"dlay:iblock.element.add.form",
-	"modal_order",
+	"dlay:iblock.element.add.form", 
+	"modal",
 	array(
-		"COMPONENT_TEMPLATE" => ".default",
+		"COMPONENT_TEMPLATE" => "modal",
 		"CUSTOM_TITLE_DATE_ACTIVE_FROM" => "",
 		"CUSTOM_TITLE_DATE_ACTIVE_TO" => "",
 		"CUSTOM_TITLE_DETAIL_PICTURE" => "",
@@ -87,8 +87,7 @@
 		"DEFAULT_INPUT_SIZE" => "30",
 		"DETAIL_TEXT_USE_HTML_EDITOR" => "N",
 		"ELEMENT_ASSOC" => "CREATED_BY",
-		"GROUPS" => array(
-		),
+		"GROUPS" => "",
 		"IBLOCK_ID" => "28",
 		"IBLOCK_TYPE" => "services",
 		"LEVEL_LAST" => "Y",
@@ -119,7 +118,7 @@
 		"USER_MESSAGE_ADD" => "Спасибо! Ваша заявка успешно отправлена. Скоро наш менеджер с Вами свяжется",
 		"USER_MESSAGE_EDIT" => "",
 		"USE_CAPTCHA" => "N",
-        "AJAX_MODE" => "Y"
+		"AJAX_MODE" => "Y"
 	),
 	false
 );?>

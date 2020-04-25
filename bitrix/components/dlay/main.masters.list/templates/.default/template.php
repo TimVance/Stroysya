@@ -33,13 +33,13 @@ if ($USER->IsAuthorized()) $auth = true;
                 <div class="services-row_fio">
                     <span class="services-row_image-wrap">
                         <? if (!empty($item["image"]["src"])): ?>
-                            <a href="#"><img src="<?=$item["image"]["src"];?>" alt="<?=$item["name"];?>"></a>
+                            <a href="/masters/?id=<?=$id_user?>"><img src="<?=$item["image"]["src"];?>" alt="<?=$item["name"];?>"></a>
                         <? else: ?>
-                            <a href="#"><span class="no-photo-master"></span></a>
+                            <a href="/masters/?id=<?=$id_user?>"><span class="no-photo-master"></span></a>
                         <? endif; ?>
                     </span>
                     <span class="services-row_name-wrap">
-                        <a href="#"><?=$item["name"];?></a>
+                        <a href="/masters/?id=<?=$id_user?>"><?=$item["name"];?></a>
                     </span>
                 </div>
                 <div class="services-row_list">
