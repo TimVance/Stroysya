@@ -88,7 +88,13 @@ if (!empty($master)) {
     }
     else echo 'Мастер не найден';
 }
-else require ($_SERVER['DOCUMENT_ROOT'].'/404.php');
+else {
+    $APPLICATION->IncludeComponent(
+        "dlay:main.masters.list",
+        "page",
+        array()
+    );
+}
 
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");

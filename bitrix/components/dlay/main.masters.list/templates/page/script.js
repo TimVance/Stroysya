@@ -24,7 +24,7 @@ $(function() {
             ajax: true,
             component: "services"
         };
-        let url = '/bitrix/components/dlay/main.masters.list/templates/.default/ajax.php';
+        let url = '/bitrix/components/dlay/main.masters.list/templates/page/ajax.php';
         list.addClass("load");
         $.ajax({
             method: "post",
