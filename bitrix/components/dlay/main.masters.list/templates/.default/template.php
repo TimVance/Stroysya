@@ -3,11 +3,6 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $this->setFrameMode(true);
 ?>
 
-<?
-if(CSite::InDir('/index.php')) $isMainPage = true;
-else $isMainPage = false;
-?>
-
 <div class="maxwidth-theme">
     <? if (count($arResult["sections"]) > 0): ?>
         <h2>Услуги сервиса</h2>
@@ -33,8 +28,15 @@ else $isMainPage = false;
                 <div class="status">Статус</div>
                 <div class="services-row_button"></div>
             </div>
+            <? $count = 0; ?>
             <? foreach ($arResult["masters"] as $id_user => $item): ?>
                 <? if(empty($arResult["services"][$id_user])) continue; ?>
+                <?
+                    if (!empty($arParams["count"])) {
+                        if (intval($arParams["count"]) <= $count) break;
+                        $count++;
+                    }
+                ?>
                 <div class="services-row">
                     <div class="services-row_fio">
                         <span class="services-row_image-wrap">
@@ -62,7 +64,7 @@ else $isMainPage = false;
         Услуг не найдено!
     <? endif; ?>
     </div>
-    <? if ($isMainPage): ?>
+    <? if (!empty($arParams["count"])): ?>
         <div class="link-masters"><a class="btn btn-default" href="/masters/">Все мастера</a></div>
     <? endif; ?>
 </div>

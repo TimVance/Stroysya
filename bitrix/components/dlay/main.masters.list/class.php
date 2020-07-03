@@ -65,7 +65,7 @@ class ViewMasterList extends CBitrixComponent
     private function getAllUsers()
     {
         $data         = array();
-        $filter       = array("GROUPS_ID" => array($this->group_id));
+        $filter       = array("GROUPS_ID" => $this->group_id);
         $arParameters = array("SELECT" => array("UF_*"));
         $rsUsers      = CUser::GetList(($by = "ID"), ($order = "desc"), $filter, $arParameters);
         while ($rsUser = $rsUsers->Fetch()) {
@@ -105,9 +105,6 @@ class ViewMasterList extends CBitrixComponent
                     $items[$user][$arFields["ID"]]["name"] = $arFields["NAME"];
                 }
             }
-            //echo '<pre>';
-            //print_r($items);
-            //echo '</pre>';
             return $items;
         }
     }
@@ -158,9 +155,8 @@ class ViewMasterList extends CBitrixComponent
     // Получение всех пользователей группы мастера
     private function getUsers($items = array())
     {
-        //print_r($items);
         $data         = array();
-        $filter       = array("ID" => implode('|', $items));
+        $filter       = array("ID" => implode('|', $items), "GROUPS_ID" => $this->group_id);
         $arParameters = array("SELECT" => array("UF_*"));
         $rsUsers      = CUser::GetList(($by = "ID"), ($order = "desc"), $filter, $arParameters);
         while ($rsUser = $rsUsers->Fetch()) {
@@ -173,7 +169,6 @@ class ViewMasterList extends CBitrixComponent
                     BX_RESIZE_IMAGE_EXACT
                 );
         }
-        //print_r($data);
         return $data;
     }
 

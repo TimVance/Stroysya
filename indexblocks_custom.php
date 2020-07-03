@@ -40,7 +40,7 @@
 <?$APPLICATION->IncludeComponent(
     "dlay:main.masters.list",
     ".default",
-    array()
+    array("count" => 7)
 );?>
 
 <div class="grey_block small-padding">

@@ -244,3 +244,7 @@
 .call-master-button:hover {
     text-decoration: underline;
 }
+
+.services-list__wrapper > .services-list > .maxwidth-theme {
+    padding: 0;
+}
