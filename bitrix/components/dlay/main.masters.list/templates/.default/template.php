@@ -3,6 +3,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $this->setFrameMode(true);
 ?>
 
+<?
+if(CSite::InDir('/index.php')) $isMainPage = true;
+else $isMainPage = false;
+?>
+
 <div class="maxwidth-theme">
     <? if (count($arResult["sections"]) > 0): ?>
         <h2>Услуги сервиса</h2>
@@ -57,4 +62,7 @@ $this->setFrameMode(true);
         Услуг не найдено!
     <? endif; ?>
     </div>
+    <? if ($isMainPage): ?>
+        <div class="link-masters"><a class="btn btn-default" href="/masters/">Все мастера</a></div>
+    <? endif; ?>
 </div>
