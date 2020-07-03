@@ -63,66 +63,67 @@
 			<?endif;?>
 			<?CNext::ShowPageType('footer');?>
 		</footer>
+
         <div class="modal-order-wrapper">
             <div class="close-modal-order">x</div>
             <h3>Оформление заявки</h3>
             <?
             global $USER;
             if ($USER->IsAuthorized()) {
-$APPLICATION->IncludeComponent(
-	"dlay:iblock.element.add.form", 
-	"modal", 
-	array(
-		"COMPONENT_TEMPLATE" => "modal",
-		"CUSTOM_TITLE_DATE_ACTIVE_FROM" => "",
-		"CUSTOM_TITLE_DATE_ACTIVE_TO" => "",
-		"CUSTOM_TITLE_DETAIL_PICTURE" => "",
-		"CUSTOM_TITLE_DETAIL_TEXT" => "Описание работ",
-		"CUSTOM_TITLE_IBLOCK_SECTION" => "",
-		"CUSTOM_TITLE_NAME" => "",
-		"CUSTOM_TITLE_PREVIEW_PICTURE" => "",
-		"CUSTOM_TITLE_PREVIEW_TEXT" => "",
-		"CUSTOM_TITLE_TAGS" => "",
-		"DEFAULT_INPUT_SIZE" => "30",
-		"DETAIL_TEXT_USE_HTML_EDITOR" => "N",
-		"ELEMENT_ASSOC" => "CREATED_BY",
-		"GROUPS" => array(
-			0 => "6",
-		),
-		"IBLOCK_ID" => "28",
-		"IBLOCK_TYPE" => "services",
-		"LEVEL_LAST" => "Y",
-		"LIST_URL" => "",
-		"MAX_FILE_SIZE" => "0",
-		"MAX_LEVELS" => "100000",
-		"MAX_USER_ENTRIES" => "100000",
-		"PREVIEW_TEXT_USE_HTML_EDITOR" => "N",
-		"PROPERTY_CODES" => array(
-			0 => "277",
-			1 => "278",
-			2 => "280",
-			3 => "281",
-			4 => "282",
-			5 => "NAME",
-			6 => "DETAIL_TEXT",
-		),
-		"PROPERTY_CODES_REQUIRED" => array(
-			0 => "277",
-			1 => "278",
-			2 => "NAME",
-			3 => "DETAIL_TEXT",
-		),
-		"RESIZE_IMAGES" => "Y",
-		"SEF_MODE" => "N",
-		"STATUS" => "INACTIVE",
-		"STATUS_NEW" => "N",
-		"USER_MESSAGE_ADD" => "Спасибо! Ваша заявка успешно отправлена. Скоро наш менеджер с Вами свяжется",
-		"USER_MESSAGE_EDIT" => "",
-		"USE_CAPTCHA" => "N",
-		"AJAX_MODE" => "Y"
-	),
-	false
-);?>
+                $APPLICATION->IncludeComponent(
+                    "dlay:iblock.element.add.form",
+                    "modal",
+                    array(
+                        "COMPONENT_TEMPLATE" => "modal",
+                        "CUSTOM_TITLE_DATE_ACTIVE_FROM" => "",
+                        "CUSTOM_TITLE_DATE_ACTIVE_TO" => "",
+                        "CUSTOM_TITLE_DETAIL_PICTURE" => "",
+                        "CUSTOM_TITLE_DETAIL_TEXT" => "Описание работ",
+                        "CUSTOM_TITLE_IBLOCK_SECTION" => "",
+                        "CUSTOM_TITLE_NAME" => "",
+                        "CUSTOM_TITLE_PREVIEW_PICTURE" => "",
+                        "CUSTOM_TITLE_PREVIEW_TEXT" => "",
+                        "CUSTOM_TITLE_TAGS" => "",
+                        "DEFAULT_INPUT_SIZE" => "30",
+                        "DETAIL_TEXT_USE_HTML_EDITOR" => "N",
+                        "ELEMENT_ASSOC" => "CREATED_BY",
+                        "GROUPS" => array(
+                            0 => "6",
+                        ),
+                        "IBLOCK_ID" => "28",
+                        "IBLOCK_TYPE" => "services",
+                        "LEVEL_LAST" => "Y",
+                        "LIST_URL" => "",
+                        "MAX_FILE_SIZE" => "0",
+                        "MAX_LEVELS" => "100000",
+                        "MAX_USER_ENTRIES" => "100000",
+                        "PREVIEW_TEXT_USE_HTML_EDITOR" => "N",
+                        "PROPERTY_CODES" => array(
+                            0 => "277",
+                            1 => "278",
+                            2 => "280",
+                            3 => "281",
+                            4 => "282",
+                            5 => "NAME",
+                            6 => "DETAIL_TEXT",
+                        ),
+                        "PROPERTY_CODES_REQUIRED" => array(
+                            0 => "277",
+                            1 => "278",
+                            2 => "NAME",
+                            3 => "DETAIL_TEXT",
+                        ),
+                        "RESIZE_IMAGES" => "Y",
+                        "SEF_MODE" => "N",
+                        "STATUS" => "INACTIVE",
+                        "STATUS_NEW" => "N",
+                        "USER_MESSAGE_ADD" => "Спасибо! Ваша заявка успешно отправлена. Скоро наш менеджер с Вами свяжется",
+                        "USER_MESSAGE_EDIT" => "",
+                        "USE_CAPTCHA" => "N",
+                        "AJAX_MODE" => "Y"
+                    ),
+                    false
+                );?>
             <? } else { ?>
                 <?$APPLICATION->IncludeComponent(
                     "aspro:auth.next",
@@ -143,7 +144,44 @@ $APPLICATION->IncludeComponent(
                 );?>
             <? } ?>
         </div>
+        <div class="modal-call-wrapper">
+            <div class="close-modal-order">x</div>
+            <?$APPLICATION->IncludeComponent(
+                "bitrix:form",
+                "popup",
+                Array(
+                    "AJAX_MODE" => "Y",
+                    "AJAX_OPTION_ADDITIONAL" => "",
+                    "AJAX_OPTION_HISTORY" => "N",
+                    "AJAX_OPTION_JUMP" => "N",
+                    "AJAX_OPTION_STYLE" => "Y",
+                    "CACHE_TIME" => "3600",
+                    "CACHE_TYPE" => "A",
+                    "CHAIN_ITEM_LINK" => "",
+                    "CHAIN_ITEM_TEXT" => "",
+                    "EDIT_ADDITIONAL" => "N",
+                    "EDIT_STATUS" => "N",
+                    "IGNORE_CUSTOM_TEMPLATE" => "N",
+                    "NOT_SHOW_FILTER" => array("",""),
+                    "NOT_SHOW_TABLE" => array("",""),
+                    "RESULT_ID" => $_REQUEST[RESULT_ID],
+                    "SEF_MODE" => "N",
+                    "SHOW_ADDITIONAL" => "N",
+                    "SHOW_ANSWER_VALUE" => "N",
+                    "SHOW_EDIT_PAGE" => "N",
+                    "SHOW_LIST_PAGE" => "N",
+                    "SHOW_STATUS" => "N",
+                    "SHOW_VIEW_PAGE" => "N",
+                    "START_PAGE" => "new",
+                    "SUCCESS_URL" => "",
+                    "USE_EXTENDED_ERRORS" => "N",
+                    "VARIABLE_ALIASES" => Array("action"=>"action"),
+                    "WEB_FORM_ID" => "10"
+                )
+            );?>
+        </div>
         <div class="overlay"></div>
+
 
 		<div class="bx_areas">
 			<?CNext::ShowPageType('bottom_counter');?>

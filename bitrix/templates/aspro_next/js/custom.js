@@ -4,7 +4,7 @@ It will not be overwritten when you upgrade solution.
 */
 
 $(function() {
-    // Появление модалки
+    // Появление модалки заявок
     $(document).on('click', '.call-modal-master', function() {
         $('.modal-order-wrapper, .overlay').fadeIn();
         let masterId = parseInt($(this).attr("data-id"));
@@ -12,5 +12,13 @@ $(function() {
     });
     $(".close-modal-order, .overlay").click(function() {
         $('.modal-order-wrapper, .overlay').fadeOut();
+    });
+
+    // Появление модалки вызова замерщика
+    $(document).on('click', '.call-master-button', function() {
+        $('.modal-call-wrapper, .overlay').fadeIn();
+    });
+    $(".close-modal-order, .overlay").click(function() {
+        $('.modal-call-wrapper, .overlay').fadeOut();
     });
 });
