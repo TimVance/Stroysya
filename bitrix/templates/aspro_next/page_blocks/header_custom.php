@@ -57,6 +57,7 @@ $logoClass = ($arTheme['COLORED_LOGO']['VALUE'] !== 'Y' ? '' : ' colored');
                                 <?=CNext::showCabinetLink(true, false, 'big');?>
                             </div>
                         </div>
+                        </div>
                         <div class="pull-right">
                             <div class="wrap_icon inner-table-block">
                                 <div class="phone-block">

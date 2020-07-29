@@ -7,7 +7,7 @@ $bPopupAuth = (isset($_POST['POPUP_AUTH']) ? $_POST['POPUP_AUTH'] === 'Y' : fals
 ?>
 <?if(!$bPopupAuth):?>
 	<style>
-	.personal-link[data-event]{display:none !important;}
+	/*.personal-link[data-event]{display:none !important;}*/
 	</style>
 <?endif;?>
 <?if(!$USER->IsAuthorized()):?>
