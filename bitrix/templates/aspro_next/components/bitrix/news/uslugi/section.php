@@ -55,7 +55,7 @@ $this->setFrameMode(true);
 <?endif?>
 <?$APPLICATION->IncludeComponent(
     "bitrix:catalog.section.list",
-    "",
+    "service_items",
     Array(
         "ADD_SECTIONS_CHAIN" => "Y",
         "CACHE_FILTER" => "N",
@@ -77,9 +77,11 @@ $this->setFrameMode(true);
         "VIEW_MODE" => "LINE"
     )
 );?>
+
+
 <?$APPLICATION->IncludeComponent(
 	"bitrix:news.list",
-	"",
+	"news6",
 	Array(
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
 		"IBLOCK_ID" => $arParams["IBLOCK_ID"],
@@ -122,11 +124,12 @@ $this->setFrameMode(true);
 		"ACTIVE_DATE_FORMAT" => $arParams["LIST_ACTIVE_DATE_FORMAT"],
 		"USE_PERMISSIONS" => $arParams["USE_PERMISSIONS"],
 		"GROUP_PERMISSIONS" => $arParams["GROUP_PERMISSIONS"],
-		"FILTER_NAME" => $arParams["FILTER_NAME"],
+		"FILTER_NAME" => 'serviceFilterName',
+		"USE_FILTER" => "Y",
 		"HIDE_LINK_WHEN_NO_DETAIL" => $arParams["HIDE_LINK_WHEN_NO_DETAIL"],
 		"CHECK_DATES" => $arParams["CHECK_DATES"],
 		"STRICT_SECTION_CHECK" => $arParams["STRICT_SECTION_CHECK"],
-
+        "INCLUDE_SUBSECTIONS" => "N",
 		"PARENT_SECTION" => $arResult["VARIABLES"]["SECTION_ID"],
 		"PARENT_SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
 		"DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],

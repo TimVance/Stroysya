@@ -15,7 +15,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Как купить", 
+		"Помощь", 
 		"/help/", 
 		Array(), 
 		Array(), 
@@ -29,8 +29,8 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Магазины", 
-		"/contacts/stores/", 
+		"Вопрос-ответ", 
+		"/info/faq/", 
 		Array(), 
 		Array(), 
 		"" 
@@ -42,5 +42,33 @@ $aMenuLinks = Array(
 		Array(), 
 		"" 
 	),
+	Array(
+		"Обустройство территории дома", 
+		"/obustroystvo-territorii-doma/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Электромонтажные работы", 
+		"/elektromontazhnye-raboty/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Дизайн проекта", 
+		"/dizayn-proekta/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Ремонт помещений", 
+		"/remont-pomeshcheniy/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
 );
 ?>

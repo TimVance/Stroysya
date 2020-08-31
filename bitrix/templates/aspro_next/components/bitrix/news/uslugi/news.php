@@ -52,27 +52,31 @@ $this->setFrameMode(true);
 ?>
 <br />
 <?endif?>
-<?$APPLICATION->IncludeComponent(
-    "bitrix:catalog.section.list",
-    "",
-    Array(
-        "ADD_SECTIONS_CHAIN" => "Y",
-        "CACHE_FILTER" => "N",
-        "CACHE_GROUPS" => "Y",
-        "CACHE_TIME" => "36000000",
-        "CACHE_TYPE" => "A",
-        "COUNT_ELEMENTS" => "Y",
-        "COUNT_ELEMENTS_FILTER" => "CNT_ACTIVE",
-        "FILTER_NAME" => "arrFilter",
-        "IBLOCK_ID" => "37",
-        "IBLOCK_TYPE" => "services",
-        "SECTION_CODE" => $_REQUEST["SECTION_CODE"],
-        "SECTION_FIELDS" => array("", ""),
-        "SECTION_ID" => $_REQUEST["SECTION_ID"],
-        "SECTION_URL" => "",
-        "SECTION_USER_FIELDS" => array("", ""),
-        "SHOW_PARENT_NAME" => "Y",
-        "TOP_DEPTH" => "2",
-        "VIEW_MODE" => "LINE"
-    )
+<?$APPLICATION->IncludeComponent("bitrix:catalog.section.list", "service_items", Array(
+	"ADD_SECTIONS_CHAIN" => "Y",	// Включать раздел в цепочку навигации
+		"CACHE_FILTER" => "N",	// Кешировать при установленном фильтре
+		"CACHE_GROUPS" => "Y",	// Учитывать права доступа
+		"CACHE_TIME" => "36000000",	// Время кеширования (сек.)
+		"CACHE_TYPE" => "A",	// Тип кеширования
+		"COUNT_ELEMENTS" => "Y",	// Показывать количество элементов в разделе
+		"COUNT_ELEMENTS_FILTER" => "CNT_ACTIVE",	// Показывать количество
+		"FILTER_NAME" => "arrFilter",	// Имя массива со значениями фильтра разделов
+		"IBLOCK_ID" => "37",	// Инфоблок
+		"IBLOCK_TYPE" => "services",	// Тип инфоблока
+		"SECTION_CODE" => $_REQUEST["SECTION_CODE"],	// Код раздела
+		"SECTION_FIELDS" => array(	// Поля разделов
+			0 => "",
+			1 => "",
+		),
+		"SECTION_ID" => $_REQUEST["SECTION_ID"],	// ID раздела
+		"SECTION_URL" => "",	// URL, ведущий на страницу с содержимым раздела
+		"SECTION_USER_FIELDS" => array(	// Свойства разделов
+			0 => "",
+			1 => "",
+		),
+		"SHOW_PARENT_NAME" => "Y",	// Показывать название раздела
+		"TOP_DEPTH" => "2",	// Максимальная отображаемая глубина разделов
+		"VIEW_MODE" => "LINE",	// Вид списка подразделов
+	),
+	false
 );?>
