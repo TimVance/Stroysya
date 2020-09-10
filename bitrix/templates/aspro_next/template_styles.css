@@ -7526,3 +7526,7 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .link-masters {
 	margin-bottom: 40px;
 }
+
+.menu-navigation__content .dropdown-submenu {
+	min-height: auto !important;
+}
