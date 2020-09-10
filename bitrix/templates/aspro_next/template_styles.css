@@ -7534,3 +7534,7 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .padding-service_text_main {
 	padding: 0px 30px;
 }
+
+.edit_master .form-control {
+	margin-bottom: 0px;
+}
