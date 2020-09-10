@@ -7530,3 +7530,7 @@ table.contacts-stores tr.item td:last-of-type{width:30%;}
 .menu-navigation__content .dropdown-submenu {
 	min-height: auto !important;
 }
+
+.padding-service_text_main {
+	padding: 0px 30px;
+}

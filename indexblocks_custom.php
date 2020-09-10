@@ -37,11 +37,20 @@
     false
 );?>
 
-<?$APPLICATION->IncludeComponent(
-    "dlay:main.masters.list",
-    ".default",
-    array("count" => 7)
-);?>
+
+<div class="maxwidth-theme padding-service_text_main">
+    <?$APPLICATION->IncludeComponent(
+        "bitrix:main.include",
+        "",
+        Array(
+            "AREA_FILE_SHOW" => "file",
+            "AREA_FILE_SUFFIX" => "inc",
+            "EDIT_TEMPLATE" => "",
+            "PATH" => "/include/service_text_main.php"
+        )
+    );?>
+</div>
+<hr>
 
 <div class="grey_block small-padding">
     <div class="maxwidth-theme">
