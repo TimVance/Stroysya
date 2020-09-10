@@ -175,6 +175,8 @@ if(in_array($group_id, CUser::GetUserGroup($user_id))) {
         </div>
     </form>
     </div>
+<?}else{?>
+    Данная страница доступна только мастерам!
 <?}?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
