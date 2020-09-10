@@ -42,6 +42,8 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
         $snils    = $request->get("snils");
         $rasch    = $request->get("rasch");
         $bik      = $request->get("bik");
+        $reg      = $request->get("reg");
+        print_r($reg);
 
 
         // Загрузка файла
@@ -97,6 +99,7 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
         if (!empty($snils)) $fields["UF_SNILS"] = $snils;
         if (!empty($rasch)) $fields["UF_RASCH"] = $rasch;
         if (!empty($bik)) $fields["UF_BIK"] = $bik;
+        if (!empty($reg)) $fields["UF_REG"] = $reg;
         if ($user->Update($user_id, $fields))
             echo '<div class="alert alert-success">Настройки успешно сохранены.</div>';
 
@@ -153,6 +156,33 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
                     <select name="m_status">
                         <option <?= ($arUser["UF_STATUS"] == 19 ? 'selected' : "") ?> value="19">Свободен</option>
                         <option <?= ($arUser["UF_STATUS"] == 20 ? 'selected' : "") ?> value="20">Занят</option>
+                    </select>
+                </div>
+                <div class="iblock text_block"></div>
+            </div>
+        </div>
+        <?
+
+        $regEnum = CUserFieldEnum::GetList(array(), array("USER_FIELD_NAME"=>"UF_REG"));
+        $arRegEnum_values = [];
+        while ($arRegEnum = $regEnum->GetNext()) {
+            $arRegEnum_values[] = $arRegEnum;
+        }
+
+        ?>
+        <div class="form-control">
+            <div class="wrap_md">
+                <div class="iblock label_block">
+                    <label>Регионы работы</label>
+                    <select multiple name="reg[]">
+                        <? foreach ($arRegEnum_values as $arRegEnum_value): ?>
+                            <option
+                                    value="<?=$arRegEnum_value["ID"]?>"
+                                    <?=(in_array($arRegEnum_value["ID"], $arUser["UF_REG"]) ? "selected" : "")?>
+                            >
+                                <?=$arRegEnum_value["VALUE"]?>
+                            </option>
+                        <? endforeach; ?>
                     </select>
                 </div>
                 <div class="iblock text_block"></div>
