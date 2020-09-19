@@ -43,7 +43,7 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
         $rasch    = $request->get("rasch");
         $bik      = $request->get("bik");
         $reg      = $request->get("reg");
-        print_r($reg);
+        $price = $request->get("price");
 
 
         // Загрузка файла
@@ -65,7 +65,7 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
             }
         }
 
-        $services_block = 27;
+        $services_block = 37;
         // Получаем все записи и обновляем
         $arSelect = array("ID", "IBLOCK_ID", "NAME");
         $arFilter = array("IBLOCK_ID" => $services_block);
@@ -100,6 +100,7 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
         if (!empty($rasch)) $fields["UF_RASCH"] = $rasch;
         if (!empty($bik)) $fields["UF_BIK"] = $bik;
         if (!empty($reg)) $fields["UF_REG"] = $reg;
+        if (!empty($price)) $fields["UF_PRICES"] = json_encode($price);
         if ($user->Update($user_id, $fields))
             echo '<div class="alert alert-success">Настройки успешно сохранены.</div>';
 
@@ -112,14 +113,28 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
     $services = array();
 
     // Получение сервиса услуг
-    $arSelect = array("ID", "IBLOCK_ID", "NAME");
-    $arFilter = array("IBLOCK_ID" => 27);
+    $arSelect = array("ID", "IBLOCK_ID", "NAME", "IBLOCK_SECTION_ID");
+    $arFilter = array("IBLOCK_ID" => 37);
+    $arSection = [];
+    $res_sections = CIBlockSection::GetList(Array("LEFT_MARGIN" => "ASC"), $arFilter, true, [
+        "ID",
+        "IBLOCK_ID",
+        "IBLOCK_SECTION_ID",
+        "NAME",
+        "DEPTH_LEVEL"
+    ]);
+    while ($res_section = $res_sections->GetNext()) {
+        if ($res_section["DEPTH_LEVEL"] == 1) $arSection[$res_section["ID"]]["INFO"] = $res_section;
+        else $arSection[$res_section["IBLOCK_SECTION_ID"]]["CHILD"][$res_section["ID"]] = $res_section;
+
+    }
     $res      = CIBlockElement::GetList(array(), $arFilter, false, array(), $arSelect);
     while ($ob = $res->GetNextElement()) {
         $arFields                             = $ob->GetFields();
         $arProps                              = $ob->GetProperties();
-        $services[$arFields["ID"]]["NAME"]    = $arFields["NAME"];
-        $services[$arFields["ID"]]["CHECKED"] = (in_array($user_id, $arProps["masters"]["VALUE"]) ? "checked" : "");
+        $services[$arFields["IBLOCK_SECTION_ID"]][$arFields["ID"]]["ID"]    = $arFields["ID"];
+        $services[$arFields["IBLOCK_SECTION_ID"]][$arFields["ID"]]["NAME"]    = $arFields["NAME"];
+        $services[$arFields["IBLOCK_SECTION_ID"]][$arFields["ID"]]["CHECKED"] = (in_array($user_id, $arProps["masters"]["VALUE"]) ? "checked" : "");
     }
 
     ?>
@@ -236,17 +251,56 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
         <div class="form-control">
             <label>Список услуг</label>
             <?
-            foreach ($services as $i => $service) {
-                echo '<label><input ' . $service["CHECKED"] . ' type="checkbox" name="services[]" value="' . $i . '"/> ' . $service["NAME"] . '</label>';
+            $prices = get_object_vars(json_decode($arUser["UF_PRICES"]));
+            foreach ($arSection as $arSectionItem) {
+                echo '<div>'.$arSectionItem["INFO"]["NAME"].'</div>';
+                foreach ($services[$arSectionItem["INFO"]["ID"]] as $el_service1) {
+                    echo '<label class="price-service-wrapper" style="margin-left: 20px">
+                        <input ' . $el_service1["CHECKED"] . ' type="checkbox" name="services[]" value="' . $el_service1["ID"] . '"/>
+                        ' . $el_service1["NAME"] . '<input class="price-service '.($el_service1["CHECKED"] == "checked" ? "visible" : "").'" type="text" name="price['.$el_service1["ID"].']" placeholder="Стоимость" '.(!empty($prices[$el_service1["ID"]]) ? 'value="'.$prices[$el_service1["ID"]].'"' : "").'>
+                    руб.</label>';
+                }
+                foreach ($arSectionItem["CHILD"] as $arSectionChild) {
+                    echo '<div style="margin-left: 20px">--'.$arSectionChild["NAME"].'</div>';
+                    foreach ($services[$arSectionChild["ID"]] as $el_service) {
+                        echo '<label class="price-service-wrapper" style="margin-left: 40px">
+                            <input ' . $el_service["CHECKED"] . ' type="checkbox" name="services[]" value="' . $el_service["ID"] . '"/> 
+                            ' . $el_service["NAME"] . '<input class="price-service '.($el_service["CHECKED"] == "checked" ? "visible" : "").'" type="text" name="price['.$el_service["ID"].']" placeholder="Стоимость" '.(!empty($prices[$el_service["ID"]]) ? 'value="'.$prices[$el_service["ID"]].'"' : "").'>
+                            руб.</label>';
+                    }
+                }
             }
             ?>
         </div>
+        <br>
         <div class="but-r">
             <button class="btn btn-default" type="submit" name="save" value="Сохранить изменения"><span>Сохранить изменения</span>
             </button>
         </div>
     </form>
     </div>
+    <style>
+        .price-service {
+            display: inline-block;
+            width: 200px !important;
+            margin-left: 20px;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .price-service.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+    <script>
+        $(function () {
+            $(".price-service-wrapper input[type='checkbox']").change(function () {
+                let input = $(this);
+                if (input.prop("checked")) input.parent().find(".price-service").addClass("visible");
+                else input.parent().find(".price-service").removeClass("visible");
+            });
+        });
+    </script>
 <? } else {
     ?>
     Данная страница доступна только мастерам!
