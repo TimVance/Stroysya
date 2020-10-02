@@ -258,15 +258,15 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
                     echo '<label class="price-service-wrapper" style="margin-left: 20px">
                         <input ' . $el_service1["CHECKED"] . ' type="checkbox" name="services[]" value="' . $el_service1["ID"] . '"/>
                         ' . $el_service1["NAME"] . '<input class="price-service '.($el_service1["CHECKED"] == "checked" ? "visible" : "").'" type="text" name="price['.$el_service1["ID"].']" placeholder="Стоимость" '.(!empty($prices[$el_service1["ID"]]) ? 'value="'.$prices[$el_service1["ID"]].'"' : "").'>
-                    руб.</label>';
+                    <span style="display: none" class="currency">руб.</span></label>';
                 }
                 foreach ($arSectionItem["CHILD"] as $arSectionChild) {
-                    echo '<div style="margin-left: 20px">--'.$arSectionChild["NAME"].'</div>';
+                    echo '<div style="margin-left: 20px; margin-top: 5px">--'.$arSectionChild["NAME"].'</div>';
                     foreach ($services[$arSectionChild["ID"]] as $el_service) {
                         echo '<label class="price-service-wrapper" style="margin-left: 40px">
                             <input ' . $el_service["CHECKED"] . ' type="checkbox" name="services[]" value="' . $el_service["ID"] . '"/> 
                             ' . $el_service["NAME"] . '<input class="price-service '.($el_service["CHECKED"] == "checked" ? "visible" : "").'" type="text" name="price['.$el_service["ID"].']" placeholder="Стоимость" '.(!empty($prices[$el_service["ID"]]) ? 'value="'.$prices[$el_service["ID"]].'"' : "").'>
-                            руб.</label>';
+                            <span style="display: none" class="currency">руб.</span></label>';
                     }
                 }
             }
@@ -286,18 +286,28 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
             margin-left: 20px;
             opacity: 0;
             visibility: hidden;
+            height: 20px !important;
         }
         .price-service.visible {
             opacity: 1;
             visibility: visible;
+        }
+        .form-control label {
+            margin-bottom: 0px;
         }
     </style>
     <script>
         $(function () {
             $(".price-service-wrapper input[type='checkbox']").change(function () {
                 let input = $(this);
-                if (input.prop("checked")) input.parent().find(".price-service").addClass("visible");
-                else input.parent().find(".price-service").removeClass("visible");
+                if (input.prop("checked")) {
+                    input.parent().find(".price-service").addClass("visible");
+                    input.parent().find(".currency").show();
+                }
+                else {
+                    input.parent().find(".price-service").removeClass("visible");
+                    input.parent().find(".currency").hide();
+                }
             });
         });
     </script>

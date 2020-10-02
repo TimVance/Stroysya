@@ -100,7 +100,6 @@
                         "PREVIEW_TEXT_USE_HTML_EDITOR" => "N",
                         "PROPERTY_CODES" => array(
                             0 => "277",
-                            1 => "278",
                             2 => "280",
                             3 => "281",
                             4 => "282",
@@ -109,7 +108,6 @@
                         ),
                         "PROPERTY_CODES_REQUIRED" => array(
                             0 => "277",
-                            1 => "278",
                             2 => "NAME",
                             3 => "DETAIL_TEXT",
                         ),
