@@ -38,4 +38,9 @@ $(function() {
         });
     }
 
+    $(".services-row_list_get").click(function () {
+        $(this).parent().find(".services-row_list-item").slideDown();
+        $(this).remove();
+    });
+
 });

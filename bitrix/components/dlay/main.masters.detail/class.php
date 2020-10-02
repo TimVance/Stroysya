@@ -79,6 +79,10 @@ class ViewMasterList extends CBitrixComponent
         }
         if (count($ids) > 0) {
             $items    = array();
+
+            $arParams = $this->arParams;
+            $service_id = $arParams["ID"];
+
             $arSelect = array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
             $arFilter = array(
                 "IBLOCK_ID"         => IntVal($this->block_id),
@@ -90,8 +94,22 @@ class ViewMasterList extends CBitrixComponent
             while ($ob = $res->GetNextElement()) {
                 $arFields = $ob->GetFields();
                 $arProps  = $ob->GetProperties();
+
+                if ($arFields["ID"] != $service_id) continue;
+
                 foreach ($arProps["masters"]["VALUE"] as $user) {
+
+                    $rsUser = CUser::GetByID($user);
+                    $arUser = $rsUser->Fetch();
+                    $user_prices = [];
+                    if (!empty($arUser["UF_PRICES"]))
+                        $user_prices = get_object_vars(json_decode($arUser["UF_PRICES"]));
+
                     $items[$user][$arFields["ID"]]["name"] = $arFields["NAME"];
+                    $items[$user][$arFields["ID"]]["price"] = '';
+                    if (!empty($user_prices[$arFields["ID"]])) {
+                        $items[$user][$arFields["ID"]]["price"] = $user_prices[$arFields["ID"]];
+                    }
                 }
             }
             return $items;
@@ -151,6 +169,8 @@ class ViewMasterList extends CBitrixComponent
         while ($rsUser = $rsUsers->Fetch()) {
             $data[$rsUser["ID"]]["name"]   = $rsUser["NAME"] . ' ' . $rsUser["SECOND_NAME"] . ' ' . $rsUser["LAST_NAME"];
             $data[$rsUser["ID"]]["status"] = $rsUser["UF_STATUS"];
+            $data[$rsUser["ID"]]["rating"] = $rsUser["UF_RATING"];
+            $data[$rsUser["ID"]]["reg"] = $rsUser["UF_REG"];
             if (!empty($rsUser["PERSONAL_PHOTO"]))
                 $data[$rsUser["ID"]]["image"] = CFile::ResizeImageGet(
                     $rsUser["PERSONAL_PHOTO"],

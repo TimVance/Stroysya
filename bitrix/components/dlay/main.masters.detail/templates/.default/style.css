@@ -100,3 +100,37 @@
 
 .link-masters a {
   display: inline-block; }
+
+.star-rating {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  color: #ccc;
+}
+
+.services-row_rating {
+  width: 100px;
+}
+
+.star-rating.star-active {
+  color: gold;
+}
+
+.services-row_reg {
+  white-space: nowrap;
+}
+
+.services-row_list-item:nth-child(n + 4) {
+  display: none;
+}
+
+.services-row_list_get {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.services-row_list-item .price-list {
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
