@@ -29,6 +29,27 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
 
     }
 
+    // Удаление фото работ
+    if (!empty($_GET["del_photos"])) {
+
+        $user_del = new CUser;
+
+        $rsUserPhotos_del = CUser::GetByID($user_id);
+        $arUserPhoto_del = $rsUserPhotos_del->Fetch();
+
+        foreach ($arUserPhoto_del["UF_PHOTOS"] as $ufphoto) {
+            if ($_GET["del_photos"] == $ufphoto) {
+                CFile::Delete((int)$_GET["del_photos"]);
+                $arUserField_del['UF_PHOTOS'][] = array('del' => 'Y', 'old_file' => (int)$_GET["del_photos"]);
+            }
+            else $arUserField_del['UF_PHOTOS'][] = CFile::MakeFileArray($ufphoto);
+        }
+
+        if ($user_del->Update($user_id, $arUserField_del))
+            echo '<div class="alert alert-success">Фото работ пользователя успешно удалено.</div>';
+
+    }
+
     // Обновление пользователя
     if (!empty($_POST["edit_master"])) {
 
@@ -63,6 +84,41 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
                 CFile::Delete($fid);
                 unlink($_SERVER["DOCUMENT_ROOT"] . "/upload/tmp/" . $_FILES["new_file"]["name"]);
             }
+        }
+
+        if ($_FILES["photos"]) {
+            $fields_images = [];
+            foreach ($_FILES["photos"]["name"] as $k => $upload_photo_name) {
+                move_uploaded_file($_FILES["photos"]["tmp_name"][$k], $_SERVER["DOCUMENT_ROOT"] . "/upload/tmp/" . $_FILES["photos"]["name"][$k]);
+                $arFile = [];
+                $arFile              = CFile::MakeFileArray($_SERVER["DOCUMENT_ROOT"] . "/upload/tmp/" . $_FILES["photos"]["name"][$k]);
+                $arFile["MODULE_ID"] = "main";
+                $fid = [];
+                $fid                 = CFile::SaveFile($arFile, "main");
+                if (intval($fid) > 0) {
+                    $arPhoto = [];
+                    $arPhoto = CFile::MakeFileArray($fid);
+                    $fields_images[]  = $arPhoto;
+                }
+            }
+
+            if (!empty($fields_images)) {
+                $userIm  = new CUser;
+
+                $rsUserPhotos = CUser::GetByID($user_id);
+                $arUserPhotos = $rsUserPhotos->Fetch();
+
+                foreach ($arUserPhotos["UF_PHOTOS"] as $photo_downloaded) {
+                    $fields_images[] = CFile::MakeFileArray($photo_downloaded);
+                }
+
+                $fields = [
+                    "UF_PHOTOS" => $fields_images
+                ];
+                $userIm->Update($USER->GetID(), $fields);
+
+            }
+
         }
 
         $services_block = 37;
@@ -193,7 +249,7 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
                         <? foreach ($arRegEnum_values as $arRegEnum_value): ?>
                             <option
                                     value="<?=$arRegEnum_value["ID"]?>"
-                                    <?=(in_array($arRegEnum_value["ID"], $arUser["UF_REG"]) ? "selected" : "")?>
+                                <?=(in_array($arRegEnum_value["ID"], $arUser["UF_REG"]) ? "selected" : "")?>
                             >
                                 <?=$arRegEnum_value["VALUE"]?>
                             </option>
@@ -272,6 +328,27 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
             }
             ?>
         </div>
+        <br><br>
+        <div class="form-control">
+            <div class="wrap_md">
+                <div class="iblock label_block">
+                    <label>Фото работ</label>
+                    <div class="photos_masters">
+                    <?
+                    foreach ($arUser["UF_PHOTOS"] as $photos) {
+                        if (empty($photos)) continue;
+                        $file = CFile::ResizeImageGet($photos, array('width' => 150, 'height' => 150), BX_RESIZE_IMAGE_PROPORTIONAL, true);
+                        echo '<div><img src="'.$file["src"].'"><br><div class="del_photos" data-id="'.$photos.'">Удалить</div></div>';
+                    }
+                    ?>
+                    </div>
+                    <br>
+                    <br>
+                    <input type="file" name="photos[]" multiple>
+                </div>
+                <div class="iblock text_block"></div>
+            </div>
+        </div>
         <br>
         <div class="but-r">
             <button class="btn btn-default" type="submit" name="save" value="Сохранить изменения"><span>Сохранить изменения</span>
@@ -295,6 +372,20 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
         .form-control label {
             margin-bottom: 0px;
         }
+        .photos_masters div {
+            display: inline-block;
+        }
+        .photos_masters img {
+            width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .del_photos {
+            cursor: pointer;
+        }
+        .del_photos:hover {
+            text-decoration: underline;
+        }
     </style>
     <script>
         $(function () {
@@ -308,6 +399,9 @@ if (in_array($group_id, CUser::GetUserGroup($user_id))) {
                     input.parent().find(".price-service").removeClass("visible");
                     input.parent().find(".currency").hide();
                 }
+            });
+            $(".del_photos").click(function () {
+                location.replace("https://stroysya.com/personal/master/?del_photos=" + $(this).data("id"));
             });
         });
     </script>
