@@ -12,16 +12,15 @@ $arrow_group = 8;
 
 function getListServicesByUsers($masters)
 {
-    $block_id = 27;
+    $block_id = 37;
     $items    = array();
     $arSelect = array("ID", "IBLOCK_ID", "NAME", "PROPERTY_*");
     $arFilter = array(
         "IBLOCK_ID"         => IntVal($block_id),
-        "ACTIVE_DATE"       => "Y",
         "ACTIVE"            => "Y",
         "=PROPERTY_masters" => $masters
     );
-    $res      = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 50), $arSelect);
+    $res      = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 200), $arSelect);
     while ($ob = $res->GetNextElement()) {
         $arFields = $ob->GetFields();
         $arProps  = $ob->GetProperties();
@@ -65,35 +64,91 @@ if (!empty($master)) {
                     ?>
                 </div>
                 <div class="master-info">
-                    <span class="status<?=($arUser["UF_STATUS"] == 20 ? ' busy' : '')?>"><?=($arUser["UF_STATUS"] == 20 ? 'Занят' : 'Свободен')?></span>
                     <?
-                        $services = getListServicesByUsers($arUser["ID"]);
-                        if(!empty($services)) {
-                            echo '<div class="services_list"><div class="title">Список услуг: </div>';
-                            foreach ($services as $item) {
-                                echo '<div>- '.$item.'</div>';
+                        if (!empty($arUser["UF_RATING"])) {
+                            if (!empty($arUser["UF_RATING"])) {
+                                for ($i = 1; $i <= intval($arUser["UF_RATING"]); $i++) {
+                                    echo '<svg class="star-rating star-active" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" class=""></path></svg>';
+                                }
+                                for ($i = intval($arUser["UF_RATING"]); $i <= 4; $i++) {
+                                    echo '<svg class="star-rating star-deactive" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" class=""></path></svg>';
+                                }
                             }
-                            echo '</div>';
                         }
                     ?>
+                    <span class="status<?=($arUser["UF_STATUS"] == 20 ? ' busy' : '')?>"><?=($arUser["UF_STATUS"] == 20 ? 'Занят' : 'Свободен')?></span>
+                    <br>
+                    <div class="regs">
+                        <?
+                            if (!empty($arUser["UF_REG"])) echo '<div>Регионы работ:</div>';
+                            $regEnum = CUserFieldEnum::GetList(array(), array("USER_FIELD_NAME"=>"UF_REG"));
+                            $arRegEnum_values = [];
+                            while ($arRegEnum = $regEnum->GetNext()) {
+                                $arRegEnum_values[$arRegEnum["ID"]] = $arRegEnum;
+                            }
+                            foreach ($arUser["UF_REG"] as $reg) {
+                                echo '<div>'.$arRegEnum_values[$reg]["VALUE"].'</div>';
+                            }
+                        ?>
+                    </div>
                     <div class="master-button call-modal-master" data-id="7"><button>Предложить работу</button></div>
                 </div>
             </div>
+            <?
+            $services = getListServicesByUsers($arUser["ID"]);
+            if(!empty($services)) {
+                $arPrices = [];
+                if (!empty($arUser["UF_PRICES"])) {
+                    $arPrices = get_object_vars(json_decode($arUser["UF_PRICES"]));
+                }
+                echo '<div class="services_list"><div class="title">Список услуг: </div>';
+                foreach ($services as $id_service => $item) {
+                    echo '<div>- '.$item.(!empty($arPrices[$id_service]) ? ' - <span class="services_price">'.$arPrices[$id_service].' руб.</span>' : "").'</div>';
+                }
+                echo '</div>';
+            }
+            ?>
             <div class="master-description">
                 <h3>О мастере</h3>
                 <div><?=$arUser["WORK_PROFILE"]?></div>
             </div>
+            <style>
+                .star-rating {
+                    display: inline-block;
+                    width: 16px;
+                    height: 16px;
+                    color: #ccc;
+                }
+
+                .services-row_rating {
+                    width: 100px;
+                }
+
+                .star-rating.star-active {
+                    color: gold;
+                }
+
+                .services_price {
+                    border: 1px solid #ccc;
+                    padding: 3px 5px;
+                    display: inline-block;
+                    border-radius: 5px;
+                }
+            </style>
         <?}
         else echo 'Данный пользователь не является мастером';
     }
     else echo 'Мастер не найден';
 }
 else {
+    /*
     $APPLICATION->IncludeComponent(
         "dlay:main.masters.list",
         "page",
         array()
     );
+    */
+    echo 'Не указан индетификатор мастера';
 }
 
 
