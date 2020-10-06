@@ -122,16 +122,18 @@ if (!empty($master)) {
             <div class="master-photo">
                 <h3>Фото работ</h3>
                 <div><?
-                    foreach ($arUser["UF_PHOTOS"] as $photo) {
-                        $img = [];
-                        $img = CFile::ResizeImageGet(
-                            $photo,
-                            array("width" => 150, "height" => 150),
-                            BX_RESIZE_IMAGE_PROPORTIONAL
-                        );
-                        $img_big = [];
-                        $img_big = CFile::GetPath($photo);
-                        echo '<a class="fancybox" data-fancybox="gallery" href="'.$img_big.'"><img src="'.$img["src"].'" alt="Фото работ"></a>';
+                    if (!empty($arUser["UF_PHOTOS"])) {
+                        foreach ($arUser["UF_PHOTOS"] as $photo) {
+                            $img     = [];
+                            $img     = CFile::ResizeImageGet(
+                                $photo,
+                                array("width" => 150, "height" => 150),
+                                BX_RESIZE_IMAGE_PROPORTIONAL
+                            );
+                            $img_big = [];
+                            $img_big = CFile::GetPath($photo);
+                            echo '<a class="fancybox" data-fancybox="gallery" href="' . $img_big . '"><img src="' . $img["src"] . '" alt="Фото работ"></a>';
+                        }
                     }
                     ?>
                 </div>
