@@ -3,6 +3,12 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Страница мастера");
 
+?>
+
+<link rel="stylesheet" href="jquery.fancybox.min.css">
+
+<?php
+
 use Bitrix\Main\Context;
 $request = Context::getCurrent()->getRequest();
 
@@ -112,6 +118,24 @@ if (!empty($master)) {
                 <h3>О мастере</h3>
                 <div><?=$arUser["WORK_PROFILE"]?></div>
             </div>
+            <br>
+            <div class="master-photo">
+                <h3>Фото работ</h3>
+                <div><?
+                    foreach ($arUser["UF_PHOTOS"] as $photo) {
+                        $img = [];
+                        $img = CFile::ResizeImageGet(
+                            $photo,
+                            array("width" => 150, "height" => 150),
+                            BX_RESIZE_IMAGE_PROPORTIONAL
+                        );
+                        $img_big = [];
+                        $img_big = CFile::GetPath($photo);
+                        echo '<a class="fancybox" data-fancybox="gallery" href="'.$img_big.'"><img src="'.$img["src"].'" alt="Фото работ"></a>';
+                    }
+                    ?>
+                </div>
+            </div>
             <style>
                 .star-rating {
                     display: inline-block;
@@ -134,6 +158,10 @@ if (!empty($master)) {
                     display: inline-block;
                     border-radius: 5px;
                 }
+                .fancybox {
+                    margin-right: 10px;
+                    border-radius: 10px;
+                }
             </style>
         <?}
         else echo 'Данный пользователь не является мастером';
@@ -150,7 +178,12 @@ else {
     */
     echo 'Не указан индетификатор мастера';
 }
+?>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="jquery.fancybox.min.js"></script>
+
+<?php
 
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
 
